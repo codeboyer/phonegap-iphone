@@ -160,13 +160,8 @@ static NSString *gapVersion;
     NSNumber *useLocation          = [settings objectForKey:@"UseLocation"];
     NSString *topActivityIndicator = [settings objectForKey:@"TopActivityIndicator"];
 	
-	
-	// The first item in the supportedOrientations array is the start orientation (guaranteed to be at least Portrait)
-	[[UIApplication sharedApplication] setStatusBarOrientation:[[supportedOrientations objectAtIndex:0] intValue]];
-	
 	// Set the supported orientations for rotation. If number of items in the array is > 1, autorotate is supported
     viewController.supportedOrientations = supportedOrientations;
-	
 	
 	CGRect screenBounds = [ [ UIScreen mainScreen ] bounds ];
 	self.window = [ [ [ UIWindow alloc ] initWithFrame:screenBounds ] autorelease ];
@@ -259,12 +254,12 @@ static NSString *gapVersion;
 	 * imageView - is the Default loading screen, it stay up until the app and UIWebView (WebKit) has completly loaded.
 	 * You can change this image by swapping out the Default.png file within the resource folder.
 	 */
-	UIImage* image = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Default" ofType:@"png"]];
-	imageView = [[UIImageView alloc] initWithImage:image];
-	[image release];
-	
+	UIImageView* imageView = [[UIImageView alloc] init];
     imageView.tag = 1;
-	[window addSubview:imageView];
+    viewController.launchImage = imageView;
+    [viewController setDisplayLaunchImage:UIInterfaceOrientationPortrait];
+    [viewController.view addSubview:imageView];
+    [viewController.view bringSubviewToFront:imageView];
 	[imageView release];
 
 	/*
@@ -415,7 +410,9 @@ static NSString *gapVersion;
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	activityView.hidden = YES;	
 
-	imageView.hidden = YES;
+    viewController.launchImage.hidden = YES;
+    [viewController.launchImage removeFromSuperview];
+	viewController.launchImage = nil;
 	
 	[window bringSubviewToFront:viewController.view];
 	webView = theWebView; 	
@@ -615,7 +612,6 @@ static NSString *gapVersion;
 {
     [PluginResult releaseStatus];
 	[commandObjects release];
-	[imageView release];
 	[viewController release];
     [activityView release];
 	[window release];

@@ -37,7 +37,6 @@
 	IBOutlet UIWebView *webView;
 	IBOutlet PhoneGapViewController *viewController;
 	
-	IBOutlet UIImageView *imageView;
 	IBOutlet UIActivityIndicatorView *activityView;
 
 	NSURLConnection *conn;				// added by urbian
