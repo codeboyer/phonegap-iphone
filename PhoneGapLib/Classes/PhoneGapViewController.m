@@ -120,7 +120,7 @@
 
 	NSString* jsCallback = [NSString stringWithFormat:@"window.__defineGetter__('orientation',function(){return %d;});window.onorientationchange();",i];
 	[webView stringByEvaluatingJavaScriptFromString:jsCallback];
-	 
+    [webView stringByEvaluatingJavaScriptFromString:@"var e = document.createEvent('Events'); e.initEvent('orientationchange', true, false); document.dispatchEvent(e); "];	 
 }
 
 - (void) setWebView:(UIWebView*) theWebView {
